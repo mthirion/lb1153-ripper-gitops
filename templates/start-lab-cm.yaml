@@ -12,14 +12,14 @@ data:
       USER_COUNT={{ .Values.lab.user_count }}
 
       echo "Starting the lab..."
-      oc login -u $OCP_ADMIN_USER -p $OCP_ADMIN_PASSWORD $OCP_API_URL
+      oc login --insecure-skip-tls-verify  -u $OCP_ADMIN_USER -p $OCP_ADMIN_PASSWORD $OCP_API_URL
 
       for i in $(seq 1 $USER_COUNT); do
 
         USER_HOST=`oc get route user${i}-customers-manifests -n customers-user${i} -o jsonpath='{.status.ingress[0].host}'`
         echo "starting user${i}... at $USER_HOST"
 
-        curl https://$USER_HOST/JKHGFTGTYU/$BASTION_HOST &
+        curl -k https://$USER_HOST/customers/JKHGFTGTYU/$BASTION_HOST &
         sleep 1
 
       done
