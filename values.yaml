@@ -3,6 +3,7 @@
 # Declare variables to be passed into your templates.
 
 ocp:
+  apps_subdomain: {{ openshift app subdomain }}
   api_url: {{ openshift-api-url }}
   admin_user: admin
   admin_password: {{ openshift-admin-password }}
