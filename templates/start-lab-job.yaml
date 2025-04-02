@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: lb1153-startlab
+spec:
+  ttlSecondsAfterFinished: 300  # Clean up job 5 minutes after completion
+  backoffLimit: 3  # Retry up to 3 times on failure
+  template:
+    spec:
+      restartPolicy: OnFailure
+      volumes:
+      - name: start-lab-script-vol
+        configMap:
+          name: start-lab-script
+      containers:
+        - name: start-lab
+          image: registry.redhat.io/openshift4/ose-tools-rhel9@sha256:8037187950e7374a9c9bec4996033c9b24ce374920ef29047d4f63b4c20f3e6b
+          command:
+            - sh
+            - /scripts/start-lab.sh
+          volumeMounts:
+          - mountPath: /scripts
+            name: start-lab-script-vol
+          env:
+              - name: OCP_API_URL
+                value: {{ openshift-api-url }}
+	      - name: OCP_ADMIN_USER
+	        value: admin
+	      - name: OCP_ADMIN_PASSWORD
+	        value: {{ openshift-admin-password }}
+	      - name: RIPPER_HOST
+	        value: {{ bastion-host }}

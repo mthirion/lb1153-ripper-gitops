@@ -1,0 +1,14 @@
+# Default values for quarkus-template.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+ocp:
+  api_url: {{ openshift-api-url }}
+  admin_user: admin
+  admin_password: {{ openshift-admin-password }}
+  
+bastion:
+  host: {{ bastion-host }}
+      
+lab:
+  user_count: {{ user-count }}
